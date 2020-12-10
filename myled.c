@@ -22,80 +22,80 @@ static volatile u32 *gpio_base = NULL;
 
 static ssize_t led_write(struct file* filp, const char* buf, size_t count, loff_t* pos)
 {
-		char c;   
-		if(copy_from_user(&c,buf,sizeof(char)))
-		return -EFAULT;
+	char c;   
+	if(copy_from_user(&c,buf,sizeof(char)))
+	return -EFAULT;
 
-		if(c == '0'){
-		gpio_base[10] = 1 << 23;	
-		gpio_base[10] = 1 << 24;
-		gpio_base[10] = 1 << 25;
-		}
+	if(c == '0'){
+	gpio_base[10] = 1 << 23;	
+	gpio_base[10] = 1 << 24;
+	gpio_base[10] = 1 << 25;
+	}
 
-		else if(c == '1'){
-		gpio_base[10] = 1 << 23;	
-		gpio_base[10] = 1 << 24;
-		gpio_base[7] = 1 << 25;
-		}
+	else if(c == '1'){
+	gpio_base[10] = 1 << 23;	
+	gpio_base[10] = 1 << 24;
+	gpio_base[7] = 1 << 25;
+	}
 
-		else if(c == '2'){
-		gpio_base[10] = 1 << 23;	
-		gpio_base[7] = 1 << 24;
-		gpio_base[10] = 1 << 25;	 
-		}
+	else if(c == '2'){
+	gpio_base[10] = 1 << 23;	
+	gpio_base[7] = 1 << 24;
+	gpio_base[10] = 1 << 25;	 
+	}
 
-		else if(c == '3'){
-		gpio_base[10] = 1 << 23;	
-		gpio_base[7] = 1 << 24;
-		gpio_base[7] = 1 << 25;
-		}
+	else if(c == '3'){
+	gpio_base[10] = 1 << 23;	
+	gpio_base[7] = 1 << 24;
+	gpio_base[7] = 1 << 25;
+	}
 
-		else if(c == '4'){
-		gpio_base[7] = 1 << 23;
-		gpio_base[10] = 1 << 24;
-		gpio_base[10] = 1 << 25;
-		}
+	else if(c == '4'){
+	gpio_base[7] = 1 << 23;
+	gpio_base[10] = 1 << 24;
+	gpio_base[10] = 1 << 25;
+	}
 
-		else if(c == '5'){
-		gpio_base[7] = 1 << 23;
-		gpio_base[10] = 1 << 24;
-		gpio_base[7] = 1 << 25;
-		}
+	else if(c == '5'){
+	gpio_base[7] = 1 << 23;
+	gpio_base[10] = 1 << 24;
+	gpio_base[7] = 1 << 25;
+	}
 
-		else if(c == '6'){
-		gpio_base[7] = 1 << 23;
-		gpio_base[7] = 1 << 24;
-		gpio_base[10] = 1 << 25;
-		}
+	else if(c == '6'){
+	gpio_base[7] = 1 << 23;
+	gpio_base[7] = 1 << 24;
+	gpio_base[10] = 1 << 25;
+	}
 
-		else if(c == '7'){
-		gpio_base[7] = 1 << 23;
-		gpio_base[7] = 1 << 24;
-		gpio_base[7] = 1 << 25;
-		}
+	else if(c == '7'){
+	gpio_base[7] = 1 << 23;
+	gpio_base[7] = 1 << 24;
+	gpio_base[7] = 1 << 25;
+	}
 
 
 							 	
-		return 1;
+	return 1;
 }
 
 static ssize_t sushi_read(struct file* filp, char* buf, size_t count, loff_t* pos)
 {
-		int size = 0;
-		char sushi[] = {'s','u','s','h','i',0x0A}; 
-		if(copy_to_user(buf+size,(const char *)sushi, sizeof(sushi))){
-		printk( KERN_INFO "sushi : copy_to_user failed\n" );
-		return -EFAULT;
-		}
-		size += sizeof(sushi);
-		return size;
+	int size = 0;
+	char sushi[] = {'s','u','s','h','i',0x0A}; 
+	if(copy_to_user(buf+size,(const char *)sushi, sizeof(sushi))){
+	printk( KERN_INFO "sushi : copy_to_user failed\n" );
+	return -EFAULT;
+	}
+	size += sizeof(sushi);
+	return size;
 }
 
 
 static struct file_operations led_fops = {
-		        .owner = THIS_MODULE,
-			.write = led_write,
-			.read = sushi_read
+	.owner = THIS_MODULE,
+	.write = led_write,
+	.read = sushi_read
 };
 
 
@@ -132,7 +132,7 @@ static int __init init_mod(void)
 	const u32 led = 23;
 	const u32 index = led/10;
 	const u32 shift = (led%10)*3;
-	const u32 mask = ~(0x7 << shift);																			     gpio_base[index] = (gpio_base[index] & mask) | (0x1 << shift);																  return 0;
+	const u32 mask = ~(0x7 << shift);																			   gpio_base[index] = (gpio_base[index] & mask) | (0x1 << shift);															      return 0;
 }
 
 static void __exit cleanup_mod(void) 
